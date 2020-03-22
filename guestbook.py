@@ -17,7 +17,9 @@
 # [START imports]
 import os
 import urllib
+import array
 
+from google.appengine.api import app_identity
 from google.appengine.api import users
 from google.appengine.ext import ndb
 
@@ -66,6 +68,13 @@ class Greeting(ndb.Model):
 class MainPage(webapp2.RequestHandler):
 
     def get(self):
+
+        #sourced from https://stackoverflow.com/questions/18649512/unicodedecodeerror-ascii-codec-cant-decode-byte-0xe2-in-position-13-ordinal
+        url = "https://gist.githubusercontent.com/marijn/396531/raw/188caa065e3cd319fed7913ee3eecf5eec541918/countries.txt"
+
+        response = urllib.urlopen(url)
+        countries = response.readlines()
+
         guestbook_name = self.request.get('guestbook_name',
                                           DEFAULT_GUESTBOOK_NAME)
         greetings_query = Greeting.query(
@@ -86,6 +95,7 @@ class MainPage(webapp2.RequestHandler):
             'guestbook_name': urllib.quote_plus(guestbook_name),
             'url': url,
             'url_linktext': url_linktext,
+            'countries': countries
         }
 
         template = JINJA_ENVIRONMENT.get_template('index.html')
