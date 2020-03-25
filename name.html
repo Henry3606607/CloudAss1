@@ -49,11 +49,14 @@
     </div>
     <div class="container">
       <h2>Hello {{ user.name }}</h2>
-      <form action="/name" method="get">
+      <h4>Change Username</h4>
+      <form action="/change-username" method="post">
+        <label for="username">New username</label>
+        <input type="text" id="username" name="username"><br><br>
+        {% if login_failed %}
+          <p class="error"><strong>Username cannot be empty</strong>
+        {% endif %}
         <div><input type="submit" class="btn btn-large btn-primary" value="Change Username"></div>
-      </form>
-      <form action="/password" method="get">
-        <div><input type="submit" class="btn btn-large btn-primary" value="Change Password"></div>
       </form>
 
       <hr>
