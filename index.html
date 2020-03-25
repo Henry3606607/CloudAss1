@@ -30,6 +30,9 @@
         margin-top: 10px;
         overflow: scroll;
       }
+      .error {
+        color: red;
+      }
     </style>
   </head>
   <body>
@@ -41,51 +44,27 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="#">App Engine Guestbook</a>
-          <div class="nav-collapse collapse pull-right">
-            <a href="{{ url|safe }}" class="btn">{{ url_linktext }}</a>
-          </div>
         </div>
       </div>
     </div>
     <div class="container">
-      <!-- [START greetings] -->
-      {% for greeting in greetings %}
-      <div class="row">
-        {% if greeting.author %}
-          <b>{{ greeting.author.email }}
-            {% if user and user.user_id() == greeting.author.identity %}
-              (You)
-            {% endif %}
-          </b> wrote:
-        {% else %}
-          An anonymous person wrote:
-        {% endif %}
-        <blockquote>{{ greeting.content }} - {{ greeting.country }}</blockquote>
-      </div>
-      {% endfor %}
-      <!-- [END greetings] -->
 
-      <form action="/sign?guestbook_name={{ guestbook_name }}" method="post">
-        <div><textarea name="content" class="input-block-level" rows="3"></textarea></div>
+      <form action="/login" method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username"><br><br>
+        <label for="password">Password:</label>
+        <input type="text" id="password" name="password"><br><br>
 
-        <select name="country">
-          {% for c in countries %}
-            <option value="{{ c }}">{{ c }}</option>
-          {% endfor %}
-        </select>
-
-        <div><input type="submit" class="btn btn-large btn-primary" value="Sign Guestbook"></div>
+        <div><input type="submit" class="btn btn-large btn-primary" value="Login"></div>
+          {% if login_failed %}
+            <p class="error"><strong>Wrong username and/or password</strong>
+          {% endif %}
+          {% if response %}
+            <p><strong>{{ response }}</strong>
+          {% endif %}
       </form>
 
       <hr>
-
-      <form>Guestbook name:
-        <input value="{{ guestbook_name }}" name="guestbook_name">
-
-        <input type="submit" value="switch">
-
-      </form>
 
       <a href="{{ url|safe }}">{{ url_linktext }}</a>
     </div>
