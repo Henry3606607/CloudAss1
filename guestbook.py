@@ -49,7 +49,7 @@ def user_key(user_id):
 
 
 # [START greeting]
-class User(ndb.Model):
+class Test(ndb.Model):
     """A main model for representing an individual Guestbook entry."""
     id = ndb.KeyProperty(indexed=True)
     name = ndb.StringProperty(indexed=False)
@@ -82,16 +82,18 @@ class Login(webapp2.RequestHandler):
         # single entity group will be consistent. However, the write
         # rate to a single entity group should be limited to
         # ~1/second.
+        user_query = Test.query().filter(ndb.KeyProperty('id') == user_key(self.request.get('username')))
+        #user_query = Test.query().key_filter(user_key(self.request.get('username')))
+        #user_query = Test.query(Test.password = self.request.get('password'))
+        #user_query = Test.query()
 
-        user_query = User.query(
-                    ancestor=user_key(self.request.get('username')))
         user = user_query.fetch(1)
 
         login_failed = True
         found_user = None
         if len(user) == 1:
             found_user = user[0]
-            if found_user.password == self.request.get('password'):
+            if found_user.password == int(self.request.get('password')):
                 login_failed = False
 
 

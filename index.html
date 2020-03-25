@@ -54,14 +54,10 @@
         <input type="text" id="username" name="username"><br><br>
         <label for="password">Password:</label>
         <input type="text" id="password" name="password"><br><br>
-
+        {% if login_failed %}
+          <p class="error"><strong>Wrong username and/or password</strong>
+        {% endif %}
         <div><input type="submit" class="btn btn-large btn-primary" value="Login"></div>
-          {% if login_failed %}
-            <p class="error"><strong>Wrong username and/or password</strong>
-          {% endif %}
-          {% if response %}
-            <p><strong>{{ response }}</strong>
-          {% endif %}
       </form>
 
       <hr>
